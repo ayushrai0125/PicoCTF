@@ -1,3 +1,9 @@
+# PicoCTF - Gym Exclusive -  Reverse Enginnering - Picker - Easy 
+## Date: 03/08/2024
+> This service can provide you with a random number, but can it do anything else?
+
+We're Given a python file this time.
+```python
 
 import sys
 
@@ -166,3 +172,30 @@ while(True):
   except Exception as e:
     print(e)
     break
+```
+seems pretty regular python file but i notice something interesting on line 165
+```python
+eval(user_input + '()')
+```
+so this one line basically calls the function based on user input 
+so 'win' function is what we wanna call to get the flag
+
+```bash
+nc saturn.picoctf.net 62990
+```
+I connect to the program and type win and it gets me the flag but in hexadecimal
+![ss1](ss1.png)
+
+so I write a python script to convert the hex values to ascii and print the flag
+```python
+hexFlag = "0x70 0x69 0x63 0x6f 0x43 0x54 0x46 0x7b 0x34 0x5f 0x64 0x31 0x34 0x6d 0x30 0x6e 0x64 0x5f 0x31 0x6e 0x5f 0x37 0x68 0x33 0x5f 0x72 0x30 0x75 0x67 0x68 0x5f 0x62 0x35 0x32 0x33 0x62 0x32 0x61 0x31 0x7d".split(" ")
+flag = str()
+
+for x in hexFlag:
+    flag += chr(int(x, 16))
+
+print(flag)
+```
+![ss2](ss2.png)
+And there we go.
+### Flag : picoCTF{4_d14m0nd_1n_7h3_r0ugh_b523b2a1}
